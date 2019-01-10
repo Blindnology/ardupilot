@@ -230,8 +230,8 @@ void Rover::send_wheel_encoder_distance(mavlink_channel_t chan)
 {
     // send wheel encoder data using wheel_distance message
     if (g2.wheel_encoder.num_sensors() > 0) {
-    	float distance[sizeof(mavlink_wheel_distance_t::distance)/sizeof(float)] {};
-        memcpy(distance, wheel_encoder_last_distance_m, sizeof(float)*g2.wheel_encoder.num_sensors());
+    	double distance[sizeof(mavlink_wheel_distance_t::distance)/sizeof(double)] {};
+        std::copy(wheel_encoder_last_distance_m, wheel_encoder_last_distance_m + g2.wheel_encoder.num_sensors(), distance);
         mavlink_msg_wheel_distance_send(chan, 1000UL * wheel_encoder_last_ekf_update_ms, g2.wheel_encoder.num_sensors(), distance);
     }
 }
